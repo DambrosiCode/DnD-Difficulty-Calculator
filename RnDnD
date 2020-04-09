@@ -1,0 +1,88 @@
+#die function
+die <- function(sides, dice=1, mod=0){
+  return(sample(sides, dice)+mod)
+}
+#weapon class
+#atk-attack bonus, damage - die damage, favor - how often weapon is used
+setClass("Weapon", slots=c(atk="numeric", damage="numeric", favor="numeric"))
+
+#player class
+setClass("Character", slots=c(playable="ANY",init="numeric", hp="numeric", 
+                              ac="numeric", weapons="ANY"))
+
+#TEST PLAYERS
+pc1 <- new("Character", playable=T, init=0, hp=100, ac=11, 
+           weapons=c(
+                     new("Weapon", atk=4, damage=8, favor=.5),
+                     new("Weapon", atk=1, damage=10, favor=.5))
+           )
+
+npc1 <- new("Character", playable=F, init = 0, hp=100, ac=14, 
+            weapons=c(
+                      new("Weapon", atk=4, damage=8, favor=.5),
+                      new("Weapon", atk=1, damage=10, favor=.5))
+            )
+
+
+#player will pick a weapon based on favoritism ratio
+setGeneric("wpnChoice", function(object) standardGeneric("wpnChoice"))
+setMethod("wpnChoice", "Character", function(object){
+  fvr <- c()
+  for(wpn in 1:length(object@weapons)){
+    fvr[wpn] <- object@weapons[[wpn]]@favor
+  }
+  #TODO: dual weilding
+  return(sample(object@weapons, 1, prob=c(fvr))[[1]])
+})
+
+#attack method rolls die from character class
+setGeneric("attack", function(atckr, dfndr) standardGeneric("attack"))
+setMethod('attack','Character',function(atckr, dfndr){
+  #choose weapon
+  wpn <- wpnChoice(atckr)
+  
+  #roll attack die
+  atckr.atk <- die(20, mod=wpn@atk)
+  
+  #if attacker atk > defender AC continue with damage
+  if (atckr.atk >= dfndr@ac) {
+    return(dfndr@hp - die(wpn@damage))
+  }
+})
+
+#function to determine order of initiative
+roll.init <- function(plyrs){
+  plyr.order <- matrix(nrow=length(plyrs), ncol=2)
+  #roll for initiative for each player
+  for (i in c(1:length(plyrs))) {
+    plyr.order[i,1] <- i
+    plyr.order[i,2] <- die(20, mod = plyrs[[i]]@ac)
+  }
+  plyr.order <- plyr.order[order(plyr.order[,2]),]
+  
+  return(list(plyrs[plyr.order[,1]])[[1]])
+}
+
+p = roll.init(c(pc1,npc1))
+
+
+
+#FIGHT!
+battle <- function(players){
+  players <- roll.init(players)
+  npcs <- lapply(p, function(p) if (p@playable==F) return(p))
+  pcs <- plyr::compact(lapply(p, function(p) if (p@playable==T) return(p)))
+  
+  #character will attack and try to draw damage
+  #for (player in players) {
+  #  #pcs will attack npcs, and vice-versa
+  #  if (player@playable==T) {
+  #    attack(player, npcs)
+  #  } else if (player@playable==F) {
+  #    attack(player, pcs)
+  #  } 
+  #}
+  pcs[[1]]@ac
+}
+
+battle(c(pc1, npc1))
