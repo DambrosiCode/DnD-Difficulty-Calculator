@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1586286119301.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "28|53|35|0|\n39|54|50|0|\n53|29|63|0|\n",
+    "hash" : "1023114313",
+    "id" : "10F6E56E",
+    "lastKnownWriteTime" : 1586368221,
+    "last_content_update" : 1586368221940,
+    "path" : "C:/Users/mattd/Desktop/RnDnD/RnDnD.R",
+    "project_path" : "RnDnD.R",
+    "properties" : {
+        "cursorPosition" : "99,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
