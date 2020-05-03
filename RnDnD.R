@@ -23,7 +23,7 @@ setClass("Character", slots=c(playable="ANY",init="numeric", hp="numeric",
                               ac="numeric", weapons="ANY"))
 
 #TEST PLAYERS
-pc1 <- new("Character", playable=T, init = 0, hp=1, ac=14, 
+pc1 <- new("Character", playable=T, init = 0, hp=100, ac=14, 
             weapons=c(
               new("Weapon", atk=4, dice=2, sides=8, bonus=1, favor=1),
               new("Weapon", atk=1, dice=1, sides=10, bonus=1, favor=0))
@@ -191,24 +191,11 @@ battle <- function(players){
 
 battle(list(pc1, npc1))
 
-#TEST PLAYERS
-pc1 <- new("Character", playable=T, init = 0, hp=99, ac=14, 
-           weapons=c(
-             new("Weapon", atk=4, dice=2, sides=8, bonus=1, favor=1),
-             new("Weapon", atk=1, dice=1, sides=10, bonus=1, favor=0))
-)
-
-npc1 <- new("Character", playable=F, init = 0, hp=100, ac=14, 
-            weapons=c(
-              new("Weapon", atk=4, dice=2, sides=8, bonus=1, favor=1),
-              new("Weapon", atk=1, dice=1, sides=10, bonus=1, favor=0))
-)
-
-#turn counter
-turns <- data.frame()
-for (i in c(1:1000)) {
-  turns <- rbind(turns, battle(list(pc1, npc1)))
-}
-table(turns$winner)
+#turn counter testing
+#turns <- data.frame()
+#for (i in c(1:1000)) {
+#  turns <- rbind(turns, battle(list(pc1, npc1)))
+#}
+#table(turns$winner)
 
 
