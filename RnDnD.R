@@ -126,6 +126,8 @@ battle <- function(players){
       
       #new stats for defender
       defender <- attack(attacker, defender)
+      print(attacker@playable)
+      print(defender@playable)
 
       battle.log <- rbind(battle.log, attacker@hp)
       
